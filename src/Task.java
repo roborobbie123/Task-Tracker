@@ -49,5 +49,9 @@ public class Task {
         this.updatedAt = updatedAt;
     }
 
+    public void print() {
+        System.out.println("ID: " + getId() + "\nDescription: " + getDescription() + "\nStatus: " + getStatus() + "\nCreatedAt: " + getCreatedAt() + "\nUpdatedAt: " + getUpdatedAt());
+    }
+
 }
 

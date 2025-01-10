@@ -6,7 +6,7 @@ public class CommandParser {
     public String id;
     public String description;
     public String commandRegex = "^\\w+";
-    public String idRegex = " \\d+ ";
+    public String idRegex = " \\d+";
     public String descriptionRegex = "\".+\"";
 
     public CommandParser(String input) {}
