@@ -14,8 +14,9 @@ public class main {
         Scanner scanner = new Scanner(System.in);
         List<Task> tasks = new ArrayList<>();
         TaskTracker tracker = new TaskTracker(tasks);
+        int count = 1;
 
-        int count = tasks.size();
+
 
         while(true) {
             System.out.println("Enter command (or 'q' to exit)");
@@ -44,7 +45,7 @@ public class main {
                 String description = null;
 
                 if (commandMatcher.find()) {
-                    command = commandMatcher.group();
+                    command = commandMatcher.group().trim();
                 }
                 if (idMatcher.find()) {
                     id = idMatcher.group().trim();
@@ -53,17 +54,16 @@ public class main {
                     description = descriptionMatcher.group();
                 }
 
-
                 switch (command) {
                     case "add":
                         if (description != null) {
                             Task task = new Task();
-                            task.setId(String.valueOf(count + 1));
                             task.setDescription(description);
                             task.setStatus("todo");
                             task.setCreatedAt(LocalTime.now());
                             task.setUpdatedAt(LocalTime.now());
                             tracker.addTask(task);
+                            task.setId(String.valueOf(count));
                             count++;
                             System.out.println("Task added successfully " + "(ID: " + task.getId() + ")");
                             break;
@@ -71,6 +71,7 @@ public class main {
                             System.out.println("Description required");
                         }
                         break;
+
                     case "update":
                         if (description != null && id != null) {
                             for (int i = tasks.size() - 1; i >= 0; i--) {
@@ -85,6 +86,7 @@ public class main {
                                 System.out.println("Valid command is required");
                             }
                         break;
+
                     case "delete":
                         if(id != null){
                             for (int i = tasks.size() - 1; i >= 0; i--) {
@@ -99,11 +101,81 @@ public class main {
                             System.out.println("Valid ID required");
                         }
                         break;
+
+                    case "mark-in-progress":
+                        if(id != null){
+                            for (int i = tasks.size() - 1; i >= 0; i--) {
+                                Task task = tasks.get(i);
+                                if (task.getId().equals(id)) {
+                                    task.setStatus("in-progress");
+                                    System.out.println("Task marked successfully " + "(ID: " + task.getId() + ")");
+                                    break;
+                                }
+                            }
+                        } else {
+                            System.out.println("Valid ID required");
+                        }
+                        break;
+
+                    case "mark-done":
+                        if(id != null){
+                            for (int i = tasks.size() - 1; i >= 0; i--) {
+                                Task task = tasks.get(i);
+                                if (task.getId().equals(id)) {
+                                    task.setStatus("done");
+                                    System.out.println("Task marked successfully " + "(ID: " + task.getId() + ")");
+                                    break;
+                                }
+                            }
+                        } else {
+                            System.out.println("Valid ID required");
+                        }
+                        break;
+
                     case "list":
-                        for(Task t : tracker.getTasks()) {
+                        for(Task t : tasks) {
                             t.print();
+                        }
+                        break;
+                    case "list done":
+                        int counter = 0;
+                        for(Task t : tracker.getTasks()) {
+                            if(t.getStatus().equals("done")) {
+                                t.print();
+                                counter++;
+                            }
+                        }
+                        if (counter == 0){
+                            System.out.println("No tasks completed yet");
+                        }
+                        break;
+
+                    case "list todo":
+                        int counter1 = 0;
+                        for(Task t : tracker.getTasks()) {
+                            if(t.getStatus().equals("todo")) {
+                                t.print();
+                                counter1++;
+                            }
+                        }
+                        if (counter1 == 0){
+                            System.out.println("No tasks to do!");
+                        }
+                        break;
+
+                        case "list in-progress":
+                            int counter2 = 0;
+                            for(Task t : tracker.getTasks()) {
+                                if(t.getStatus().equals("in-progress")) {
+                                    t.print();
+                                    counter2++;
+                                }
+                            }
+                            if (counter2 == 0){
+                                System.out.println("No tasks in progress");
+                            }
+                            break;
                 }
-            }
 
             }
 

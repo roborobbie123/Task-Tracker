@@ -50,7 +50,7 @@ public class Task {
     }
 
     public void print() {
-        System.out.println("ID: " + getId() + "\nDescription: " + getDescription() + "\nStatus: " + getStatus() + "\nCreatedAt: " + getCreatedAt() + "\nUpdatedAt: " + getUpdatedAt());
+        System.out.println("ID: " + getId() + "\nDescription: " + getDescription() + "\nStatus: " + getStatus());
     }
 
 }
