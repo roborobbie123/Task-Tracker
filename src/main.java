@@ -9,14 +9,12 @@ import java.util.regex.Pattern;
 
 public class main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         Scanner scanner = new Scanner(System.in);
         List<Task> tasks = new ArrayList<>();
         TaskTracker tracker = new TaskTracker(tasks);
         int count = 1;
-
-
 
         while(true) {
             System.out.println("Enter command (or 'q' to exit)");
@@ -179,6 +177,29 @@ public class main {
 
             }
 
+        }
+        try(FileWriter writer = new FileWriter("tasks.json", true)) {
+            writer.write("[\n");
+            for (int i = 0; i < tasks.size(); i++) {
+                Task task = tasks.get(i);
+                writer.write(String.format("""
+                                    {"id": "%s",
+                                    "description": %s,
+                                    "status": "%s",
+                                    "createdAt": "%s",
+                                    "updatedAt": "%s"}%s
+                                   """,
+                        task.getId(),
+                        task.getDescription(),
+                        task.getStatus(),
+                        task.getCreatedAt().toString(),
+                        task.getUpdatedAt().toString(),
+                        (i < tasks.size() - 1 ? "," : "")));
+            }
+            writer.write("]\n");
+        }
+        catch (IOException e) {
+            System.out.println("Error while writing to file");
         }
 
 
