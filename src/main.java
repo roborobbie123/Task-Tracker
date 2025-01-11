@@ -17,6 +17,7 @@ public class main {
         List<Task> tasks = new ArrayList<>();
         TaskTracker tracker = new TaskTracker(tasks);
 
+        //reading in the json file if it exists
         String filePath = "tasks.json";
         try(BufferedReader reader = new BufferedReader(new FileReader(filePath))){
             String line;
@@ -24,6 +25,7 @@ public class main {
             while((line = reader.readLine()) != null) {
                 json.append(line);
             }
+            //cleaning up the json file and parsing the data to task objects
             String jsonString = json.toString().trim().replace("[", "").replace("]", "");
             if (json.length() > 0) {
                 String[] taskStrings = jsonString.split("},\\s*\\{");
@@ -47,10 +49,7 @@ public class main {
             System.out.println("\n");
         }
 
-
-
-
-
+        //initializing a default count if the task list is empty
         int count = 1;
 
         while(true) {
@@ -64,6 +63,7 @@ public class main {
                 System.out.println(tasks);
                 break;
             } else {
+                //parsing the command line arguments
                 CommandParser parser = new CommandParser(input);
 
                 Pattern commandPattern = Pattern.compile(parser.commandRegex);
@@ -90,6 +90,7 @@ public class main {
                 }
 
                 switch (command) {
+                    // adds a new task object to the tasks list. Controls for id tracking based on other tasks in the list
                     case "add":
                         if (description != null) {
                             Task task = new Task();
@@ -229,6 +230,7 @@ public class main {
             }
 
         }
+        // writes the updated task list to the json file
         try(FileWriter writer = new FileWriter("tasks.json")) {
             writer.write("[\n");
             for (int i = 0; i < tasks.size(); i++) {
@@ -258,6 +260,7 @@ public class main {
         }
     }
 
+    // method for parsing the json file during read
     private static String extractValue(String taskString, String id) {
         String searchKey = "\"" + id + "\": \"";
         int startIndex = taskString.indexOf(searchKey);
