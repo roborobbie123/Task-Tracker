@@ -5,12 +5,12 @@ public class Task {
     private String id;
     private String description;
     private String status;
-    private LocalTime createdAt;
-    private LocalTime updatedAt;
+    private String createdAt;
+    private String updatedAt;
 
     public Task() {}
 
-    public Task(String id, String description, String status, LocalTime createdAt, LocalTime updatedAt) {
+    public Task(String id, String description, String status, String createdAt, String updatedAt) {
         this.id = id;
         this.description = description;
         this.status = status;
@@ -36,16 +36,16 @@ public class Task {
     public void setStatus(String status) {
         this.status = status;
     }
-    public LocalTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(LocalTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
-    public LocalTime getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
-    public void setUpdatedAt(LocalTime updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 
