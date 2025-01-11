@@ -6,6 +6,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.lang.Integer.parseInt;
+
 public class main {
 
     public static void main(String[] args) throws IOException {
@@ -31,8 +33,8 @@ public class main {
                     String id = extractValue(taskString, "id");
                     String description = extractValue(taskString, "description");
                     String status = extractValue(taskString, "status");
-                    String created = extractValue(taskString, "created");
-                    String updated = extractValue(taskString, "updated");
+                    String created = extractValue(taskString, "createdAt");
+                    String updated = extractValue(taskString, "updatedAt");
                     tracker.addTask(new Task(id, description, status, created, updated));
                 }
             }
@@ -46,12 +48,13 @@ public class main {
         }
 
 
+
+
+
         int count = 1;
-        System.out.println(tasks.size());
-        tasks.getFirst().print();
 
         while(true) {
-            System.out.println("Enter command (or 'q' to exit)");
+            System.out.println("Enter command (or 'q' to save and exit)");
             String input = scanner.nextLine();
 
             if (input.length() == 0) {
@@ -94,13 +97,13 @@ public class main {
                             task.setStatus("todo");
                             task.setCreatedAt(String.valueOf(LocalTime.now()));
                             task.setUpdatedAt(String.valueOf(LocalTime.now()));
-                            tracker.addTask(task);
-                            if(tasks.getFirst().getId() == null) {
+                            if(tasks.isEmpty() || tasks.get(0).getId() == null) {
                                 task.setId(String.valueOf(count));
                                 count++;
                             } else {
-                                task.setId(tasks.get(tasks.size()-1).getId());
+                                task.setId(String.valueOf(Integer.parseInt(tasks.get(tasks.size() - 1).getId()) + 1));
                             }
+                            tracker.addTask(task);
                             System.out.println("Task added successfully " + "(ID: " + task.getId() + ")");
                             break;
                         } else {
@@ -147,7 +150,8 @@ public class main {
                         if(id != null){
                             for (int i = tasks.size() - 1; i >= 0; i--) {
                                 Task task = tasks.get(i);
-                                if (task.getId().equals(id)) {
+                                String taskId = task.getId();
+                                if (taskId.equals(id) && taskId != null) {
                                     task.setStatus("in-progress");
                                     task.setUpdatedAt(String.valueOf(LocalTime.now()));
                                     System.out.println("Task marked successfully " + "(ID: " + task.getId() + ")");
